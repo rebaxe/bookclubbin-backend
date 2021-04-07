@@ -7,11 +7,11 @@
 
 import express from 'express'
 import createError from 'http-errors'
-import { router as imageRouter } from './image-router.js'
+import { router as searchRouter } from './search-router.js'
 
 export const router = express.Router()
 
-router.use('/images/', imageRouter)
+router.use('/search/', searchRouter)
 
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => next(createError(404)))
