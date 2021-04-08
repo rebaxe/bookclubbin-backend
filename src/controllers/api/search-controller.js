@@ -21,10 +21,10 @@ export class SearchController {
    * @param {string} id - The id of the image to load.
    */
   async getSearchResult (req, res, next, id) {
-    console.log(req.body)
+    console.log(req.query.query)
     const searchResult = await axios.get('https://www.googleapis.com/books/v1/volumes', {
       params: {
-        q: req.body.query,
+        q: req.query.query,
         key: process.env.API_KEY
       }
     })
@@ -40,6 +40,7 @@ export class SearchController {
       }
       return bookInfo
     })
+    console.log(result)
     res.status(200).json(result)
   }
 }

@@ -7,6 +7,7 @@
 
 import express from 'express'
 import logger from 'morgan'
+import cors from 'cors'
 // import { connectDB } from './config/mongoose.js'
 import { router } from './routes/router.js'
 
@@ -19,6 +20,8 @@ const main = async () => {
   const app = express()
 
   app.use(logger('dev'))
+
+  app.use(cors())
 
   // Parse requests of the content type application/json.
   app.use(express.json({ limit: '500kb' }))
