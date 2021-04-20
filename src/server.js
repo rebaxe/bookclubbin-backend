@@ -8,14 +8,14 @@
 import express from 'express'
 import logger from 'morgan'
 import cors from 'cors'
-// import { connectDB } from './config/mongoose.js'
+import { connectDB } from './config/mongoose.js'
 import { router } from './routes/router.js'
 
 /**
  * The main function of the application.
  */
 const main = async () => {
-  // await connectDB()
+  await connectDB()
 
   const app = express()
 
