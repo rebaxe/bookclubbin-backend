@@ -20,3 +20,6 @@ router.get('/invite', (req, res, next) => controller.getInvite(req, res, next))
 router.patch('/accept', (req, res, next) => controller.acceptInvite(req, res, next))
 
 router.post('/register', (req, res, next) => controller.create(req, res, next))
+
+// Catch 404 (ALWAYS keep this as the last route).
+router.use('*', (req, res, next) => next(createError(404)))
