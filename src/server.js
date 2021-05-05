@@ -26,7 +26,7 @@ const main = async () => {
   // Parse requests of the content type application/json.
   app.use(express.json({ limit: '500kb' }))
 
-  app.use(express.urlencoded())
+  app.use(express.urlencoded({ extended: false }))
 
   // Register routes.
   app.use('/', router)

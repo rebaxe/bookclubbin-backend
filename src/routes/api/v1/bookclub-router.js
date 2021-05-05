@@ -13,6 +13,10 @@ const controller = new BookclubController()
 
 export const router = express.Router()
 
-router.get('/', (req, res, next) => controller.find(req, res, next))
+router.get('/user/:id', (req, res, next) => controller.find(req, res, next))
+
+router.get('/invite', (req, res, next) => controller.getInvite(req, res, next))
+
+router.patch('/accept', (req, res, next) => controller.acceptInvite(req, res, next))
 
 router.post('/register', (req, res, next) => controller.create(req, res, next))

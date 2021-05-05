@@ -1,0 +1,11 @@
+image: node:latest 
+
+stages:
+  - lint
+
+Code linting:
+  stage: lint
+  before_script:
+    - npx install-peerdeps --dev @lnu/eslint-config
+  script:
+      npx eslint .
