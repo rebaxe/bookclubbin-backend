@@ -13,6 +13,7 @@ Code linting:
 
 Code testing: 
   stage: test
-  before_script: npm install mocha chai chai-http
+  before_script: 
+    - npm install mocha chai chai-http
   script:
-      "NODE_ENV=test mocha ./test/*  --exit"
+      NODE_ENV=test mocha ./test/*  --exit
