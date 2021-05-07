@@ -16,4 +16,5 @@ Code testing:
   before_script: 
     - npm install mocha chai chai-http
   script:
-      NODE_ENV=test mocha ./test/*  --exit
+    - NODE_ENV=test 
+    - mocha ./test/*  --exit
