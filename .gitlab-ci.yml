@@ -17,4 +17,4 @@ Code testing:
     - npm install mocha chai chai-http
   script:
     - NODE_ENV=test 
-    - mocha ./test/*  --exit
+    - npx mocha ./test/*  --exit
