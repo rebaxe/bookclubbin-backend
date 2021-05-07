@@ -14,8 +14,10 @@ import { router } from './routes/router.js'
 /**
  * The main function of the application.
  */
-const main = async () => {
-  await connectDB()
+export const main = async () => {
+  if (process.env.NODE_ENV !== 'test') {
+    await connectDB()
+  }
 
   const app = express()
 
@@ -57,10 +59,14 @@ const main = async () => {
       })
   })
 
-  app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${process.env.PORT}`)
-    console.log('Press Ctrl + C to terminate...')
-  })
+  const port = process.env.PORT
+
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`)
+      console.log('Press Ctrl + C to terminate...')
+    })
+  }
 }
 
 main().catch(console.error)

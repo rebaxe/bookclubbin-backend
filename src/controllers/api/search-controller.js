@@ -29,6 +29,7 @@ export class SearchController {
           key: process.env.API_KEY
         }
       })
+      console.log(searchResult.data)
       if (searchResult.data.totalItems > 0) {
         const result = searchResult.data.items.map((item) => {
           const bookInfo = {
