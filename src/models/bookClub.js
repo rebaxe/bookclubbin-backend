@@ -14,11 +14,7 @@ const schema = new mongoose.Schema({
     lowercase: true,
     trim: true
   },
-  firstMember: {
-    type: String,
-    required: true
-  },
-  invitedMembers: {
+  invitations: {
     type: Array,
     required: true
   },
