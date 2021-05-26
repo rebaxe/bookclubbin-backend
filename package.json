@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "start:dev": "nodemon --inspect -r dotenv/config src/server.js",
     "lint": "npx eslint ./src || exit 0",
-    "lint:fix": "npx eslint ./src --fix || exit 0"
+    "lint:fix": "npx eslint ./src --fix || exit 0",
+    "test": "NODE_ENV=test mocha ./test/*  --exit"
   },
   "repository": {
     "type": "git",
@@ -22,12 +23,21 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "http-errors": "^1.7.2",
+    "mongoose": "^5.12.5",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@lnu/eslint-config": "^1.1.2",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "dotenv": "^8.2.0",
     "eslint": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jsdoc": "*",
+    "eslint-plugin-node": "*",
+    "eslint-plugin-promise": "*",
+    "eslint-plugin-standard": "*",
+    "mocha": "^8.3.2",
     "nodemon": "^2.0.7"
   },
   "eslintConfig": {

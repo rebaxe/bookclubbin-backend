@@ -1,0 +1,20 @@
+image: node:latest 
+
+stages:
+  - lint
+  - test
+
+Code linting:
+  stage: lint
+  before_script:
+    - npx install-peerdeps --dev @lnu/eslint-config
+  script:
+      npx eslint .
+
+Code testing: 
+  stage: test
+  before_script: 
+    - npm install mocha chai chai-http
+  script:
+    - NODE_ENV=test 
+    - npx mocha ./test/*  --exit

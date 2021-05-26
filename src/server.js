@@ -8,14 +8,16 @@
 import express from 'express'
 import logger from 'morgan'
 import cors from 'cors'
-// import { connectDB } from './config/mongoose.js'
+import { connectDB } from './config/mongoose.js'
 import { router } from './routes/router.js'
 
 /**
  * The main function of the application.
  */
-const main = async () => {
-  // await connectDB()
+export const main = async () => {
+  if (process.env.NODE_ENV !== 'test') {
+    await connectDB()
+  }
 
   const app = express()
 
@@ -26,7 +28,7 @@ const main = async () => {
   // Parse requests of the content type application/json.
   app.use(express.json({ limit: '500kb' }))
 
-  app.use(express.urlencoded())
+  app.use(express.urlencoded({ extended: false }))
 
   // Register routes.
   app.use('/', router)
@@ -57,10 +59,14 @@ const main = async () => {
       })
   })
 
-  app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${process.env.PORT}`)
-    console.log('Press Ctrl + C to terminate...')
-  })
+  const port = process.env.PORT
+
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`)
+      console.log('Press Ctrl + C to terminate...')
+    })
+  }
 }
 
 main().catch(console.error)
