@@ -8,12 +8,15 @@
 import express from 'express'
 import createError from 'http-errors'
 import { BookclubController } from '../../../controllers/api/bookclub-controller.js'
+import { AuthController } from '../../../controllers/api/auth-controller.js'
+
+const auth = new AuthController()
 
 const controller = new BookclubController()
 
 export const router = express.Router()
 
-router.get('/:id', (req, res, next) => controller.get(req, res, next))
+router.get('/:id', auth.verifyToken, (req, res, next) => controller.get(req, res, next))
 
 router.get('/user/:id', (req, res, next) => controller.find(req, res, next))
 
@@ -32,6 +35,8 @@ router.patch('/:id/members/invite', (req, res, next) => controller.inviteMember(
 router.patch('/:id/members/remove', (req, res, next) => controller.removeMember(req, res, next))
 
 router.patch('/:id/members/invite/remove', (req, res, next) => controller.removeInvite(req, res, next))
+
+router.post('/:id/delete', (req, res, next) => controller.delete(req, res, next))
 
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => next(createError(404)))
