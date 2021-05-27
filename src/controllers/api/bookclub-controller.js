@@ -38,7 +38,7 @@ export class BookclubController {
   }
 
   /**
-   * Get a bookclub by id.
+   * Get a bookclub by id where requesting user is a member.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -47,8 +47,8 @@ export class BookclubController {
   async get (req, res, next) {
     try {
       const id = req.params.id
-      const club = await BookClub.findById(id)
-      !club ? res.status(204) : res.status(200).json(club)
+      const club = await BookClub.findOne({ _id: id, members: req.user })
+      !club ? res.sendStatus(204) : res.status(200).json(club)
     } catch (error) {
       let e = error
       e = createError(404)
@@ -171,7 +171,7 @@ export class BookclubController {
       const clubId = req.params.id
       const userId = req.body.user
 
-      const club = await BookClub.findOneAndUpdate(
+      await BookClub.findOneAndUpdate(
         { _id: clubId, 'invitations.invitedUser': userId },
         {
           $pull: {
