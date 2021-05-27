@@ -16,11 +16,7 @@ import cookieParser from 'cookie-parser'
  * The main function of the application.
  */
 export const main = async () => {
-  console.log('Env ' + process.env.NODE_ENV)
-
-  // if (process.env.NODE_ENV !== 'test') {
-  //   await connectDB()
-  // }
+  await connectDB()
 
   const app = express()
 
@@ -69,12 +65,10 @@ export const main = async () => {
 
   const port = process.env.PORT
 
-  if (process.env.NODE_ENV !== 'test') {
-    app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}`)
-      console.log('Press Ctrl + C to terminate...')
-    })
-  }
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`)
+    console.log('Press Ctrl + C to terminate...')
+  })
 }
 
 main().catch(console.error)

@@ -14,7 +14,6 @@ Code linting:
 Code testing: 
   stage: test
   before_script: 
-    - npm install mocha chai chai-http
+    - npm install --save-dev jest supertest dotenv cross-env
   script:
-    - NODE_ENV=test 
-    - npx mocha ./test/*  --exit
+    - cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll

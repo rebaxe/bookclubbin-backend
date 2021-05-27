@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import mongoose from 'mongoose'
 import { User } from '../src/models/user.js'
 import { mockData } from './mockdata.js'
@@ -10,7 +11,6 @@ dotenv.config()
 // Connect to test database
 beforeAll(async () => {
   const url = process.env.DB_CONNECTION_STRING_TEST
-  console.log(url)
   await mongoose.connect(url, {
     useCreateIndex: true,
     useUnifiedTopology: true,
