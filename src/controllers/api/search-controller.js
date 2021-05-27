@@ -13,7 +13,7 @@ import axios from 'axios'
  */
 export class SearchController {
   /**
-   * Provide req.image to route if :id is present.
+   * Get searchresult for requested search string and search preferences.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.

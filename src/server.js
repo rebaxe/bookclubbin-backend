@@ -16,9 +16,11 @@ import cookieParser from 'cookie-parser'
  * The main function of the application.
  */
 export const main = async () => {
-  if (process.env.NODE_ENV !== 'test') {
-    await connectDB()
-  }
+  console.log('Env ' + process.env.NODE_ENV)
+
+  // if (process.env.NODE_ENV !== 'test') {
+  //   await connectDB()
+  // }
 
   const app = express()
 
