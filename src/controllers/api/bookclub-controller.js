@@ -30,12 +30,15 @@ export class BookclubController {
       })
       res.status(201).json(club)
     } catch (error) {
-      console.log(error.message)
+      let e = error
+      e = createError(404)
+      e.innerException = error
+      next(e)
     }
   }
 
   /**
-   * Get a bookclub by id.
+   * Get a bookclub by id where requesting user is a member.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -44,8 +47,8 @@ export class BookclubController {
   async get (req, res, next) {
     try {
       const id = req.params.id
-      const club = await BookClub.findById(id)
-      !club ? res.status(204) : res.status(200).json(club)
+      const club = await BookClub.findOne({ _id: id, members: req.user })
+      !club ? res.sendStatus(204) : res.status(200).json(club)
     } catch (error) {
       let e = error
       e = createError(404)
@@ -67,7 +70,10 @@ export class BookclubController {
       const club = await BookClub.find({ members: id })
       !club ? res.status(204) : res.status(200).json(club)
     } catch (error) {
-      console.log(error.message)
+      let e = error
+      e = createError(404)
+      e.innerException = error
+      next(e)
     }
   }
 
@@ -80,10 +86,9 @@ export class BookclubController {
    */
   async getInvites (req, res, next) {
     try {
-      console.log(req.params.id)
       const userId = req.params.id
       const invitedToClub = await BookClub.find({ 'invitations.invitedUser': userId })
-      console.log(invitedToClub)
+
       if (invitedToClub.length === 0) {
         res.sendStatus(204)
       } else {
@@ -165,9 +170,8 @@ export class BookclubController {
     try {
       const clubId = req.params.id
       const userId = req.body.user
-      console.log(clubId)
-      console.log(userId)
-      const club = await BookClub.findOneAndUpdate(
+
+      await BookClub.findOneAndUpdate(
         { _id: clubId, 'invitations.invitedUser': userId },
         {
           $pull: {
@@ -177,10 +181,8 @@ export class BookclubController {
           }
         }
       )
-      console.log(club)
       res.sendStatus(204)
     } catch (error) {
-      console.log(error)
       let e = error
       e = createError(404)
       e.innerException = error
@@ -273,7 +275,68 @@ export class BookclubController {
           $pull: { members: req.body.member }
         }
       )
+
+      const club = await BookClub.findById(clubId)
+
+      // If there are no members left in the club - delete it.
+      if (club.members.length === 0) {
+        await BookClub.findByIdAndDelete(clubId)
+      }
+
       res.sendStatus(204)
+    } catch (error) {
+      let e = error
+      e = createError(404)
+      e.innerException = error
+      next(e)
+    }
+  }
+
+  /**
+   * Delete a bookclub.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async delete (req, res, next) {
+    try {
+      const clubId = req.params.id
+      await BookClub.findByIdAndDelete(clubId)
+      res.sendStatus(204)
+    } catch (error) {
+      let e = error
+      e = createError(404)
+      e.innerException = error
+      next(e)
+    }
+  }
+
+  /**
+   * Delete a user from members and invites.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async deleteUser (req, res, next) {
+    try {
+      const userId = req.params.id
+      await BookClub.findOneAndUpdate({ $or: [{ 'invitations.invitingUser': userId }, { 'invitations.invitedUser': userId }] },
+        { $pull: { invitations: { invitingUser: userId, invitedUser: userId } } },
+        { multi: true }
+      )
+      const clubs = await BookClub.find({ members: userId })
+      clubs.forEach(async (club) => {
+        await BookClub.findByIdAndUpdate(club.id, {
+          $pull: { members: userId }
+        })
+        const updatedClub = await BookClub.findById(club.id)
+        if (updatedClub.members.length === 0) {
+          await BookClub.findByIdAndDelete(club.id)
+        }
+      })
+      next()
     } catch (error) {
       let e = error
       e = createError(404)

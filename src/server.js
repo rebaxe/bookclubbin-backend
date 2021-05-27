@@ -10,6 +10,7 @@ import logger from 'morgan'
 import cors from 'cors'
 import { connectDB } from './config/mongoose.js'
 import { router } from './routes/router.js'
+import cookieParser from 'cookie-parser'
 
 /**
  * The main function of the application.
@@ -23,7 +24,12 @@ export const main = async () => {
 
   app.use(logger('dev'))
 
-  app.use(cors())
+  app.use(cors({
+    origin: ['http://localhost:3000'],
+    credentials: true
+  }))
+
+  app.use(cookieParser())
 
   // Parse requests of the content type application/json.
   app.use(express.json({ limit: '500kb' }))

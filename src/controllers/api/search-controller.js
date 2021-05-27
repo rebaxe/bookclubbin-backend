@@ -22,14 +22,13 @@ export class SearchController {
    */
   async getSearchResult (req, res, next, id) {
     if (req.query.query) {
-      console.log(req.query.query)
       const searchResult = await axios.get('https://www.googleapis.com/books/v1/volumes', {
         params: {
           q: req.query.query,
           key: process.env.API_KEY
         }
       })
-      console.log(searchResult.data)
+
       if (searchResult.data.totalItems > 0) {
         const result = searchResult.data.items.map((item) => {
           const bookInfo = {
