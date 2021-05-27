@@ -139,6 +139,9 @@ export class BookclubController {
    */
   async acceptInvite (req, res, next) {
     try {
+      if (!req.body.user) {
+        res.sendStatus(400)
+      }
       const clubId = req.params.id
       const userId = req.body.user
 
@@ -171,6 +174,9 @@ export class BookclubController {
    */
   async removeInvite (req, res, next) {
     try {
+      if (!req.body.user) {
+        res.sendStatus(400)
+      }
       const clubId = req.params.id
       const userId = req.body.user
 
@@ -272,6 +278,9 @@ export class BookclubController {
    */
   async removeMember (req, res, next) {
     try {
+      if (!req.body.member) {
+        res.sendStatus(400)
+      }
       const clubId = req.params.id
       await BookClub.findByIdAndUpdate(clubId,
         {
