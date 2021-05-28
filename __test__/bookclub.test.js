@@ -48,6 +48,13 @@ describe('POST /api/v1/bookclubs/register', () => {
   })
 })
 
+describe('GET /api/v1/bookclubs/:id', () => {
+  it('should return 403', async () => {
+    const res = await request(app).get('/api/v1/bookclubs/123')
+    expect(res.status).toBe(403)
+  })
+})
+
 describe('GET /api/v1/bookclubs/user/:id', () => {
   it('should return 200 and an array with bookclubs where the user is a member', async () => {
     const res = await request(app).get(`/api/v1/bookclubs/user/${users[0].id}`)
@@ -161,6 +168,60 @@ describe('PATCH /api/v1/bookclubs/:id/members/invite/remove', () => {
   })
 })
 
+describe('PATCH /api/v1/bookclubs/:id/books/add', () => {
+  it('should return 204', async () => {
+    const res = await request(app).patch(`/api/v1/bookclubs/${clubId}/books/add`).send({
+      bookSaved: 'A book title'
+    })
+    expect(res.status).toBe(204)
+  })
+  it('should return 204', async () => {
+    const res = await request(app).patch(`/api/v1/bookclubs/${clubId}/books/add`).send({
+      bookRead: 'Another book title'
+    })
+    expect(res.status).toBe(204)
+  })
+  it('should return 404', async () => {
+    const res = await request(app).patch('/api/v1/bookclubs/123/books/add').send({
+      bookRead: 'A book title'
+    })
+    expect(res.status).toBe(404)
+  })
+  it('should return 400', async () => {
+    const res = await request(app).patch(`/api/v1/bookclubs/${clubId}/books/add`).send({
+      book: 'A book title'
+    })
+    expect(res.status).toBe(400)
+  })
+})
+
+describe('PATCH /api/v1/bookclubs/:id/books/remove', () => {
+  it('should return 204', async () => {
+    const res = await request(app).patch(`/api/v1/bookclubs/${clubId}/books/remove`).send({
+      bookSaved: 'A book title'
+    })
+    expect(res.status).toBe(204)
+  })
+  it('should return 204', async () => {
+    const res = await request(app).patch(`/api/v1/bookclubs/${clubId}/books/remove`).send({
+      bookRead: 'Another book title'
+    })
+    expect(res.status).toBe(204)
+  })
+  it('should return 404', async () => {
+    const res = await request(app).patch('/api/v1/bookclubs/123/books/remove').send({
+      bookRead: 'A book title'
+    })
+    expect(res.status).toBe(404)
+  })
+  it('should return 400', async () => {
+    const res = await request(app).patch(`/api/v1/bookclubs/${clubId}/books/remove`).send({
+      book: 'A book title'
+    })
+    expect(res.status).toBe(400)
+  })
+})
+
 describe('PATCH /api/v1/bookclubs/:id/members/remove', () => {
   it('should return 204 and one bookclub in db', async () => {
     const res = await request(app).patch(`/api/v1/bookclubs/${clubId}/members/remove`).send({
@@ -195,7 +256,7 @@ describe('POST /api/v1/bookclubs/:id/delete', () => {
     const res = await request(app).post('/api/v1/bookclubs/123/delete')
     expect(res.status).toBe(404)
   })
-  it('should return 204', async () => {
+  it('should return 204 and no clubs in db', async () => {
     const club = await BookClub.create({
       clubname: 'The club',
       invitations: [
@@ -208,6 +269,8 @@ describe('POST /api/v1/bookclubs/:id/delete', () => {
     })
     const res = await request(app).post(`/api/v1/bookclubs/${club.id}/delete`)
     expect(res.status).toBe(204)
+    const clubs = await BookClub.find({})
+    expect(clubs).toHaveLength(0)
   })
 })
 

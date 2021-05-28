@@ -225,6 +225,8 @@ export class BookclubController {
           }
         )
         res.sendStatus(204)
+      } else {
+        res.sendStatus(400)
       }
     } catch (error) {
       let e = error
@@ -260,6 +262,8 @@ export class BookclubController {
           }
         )
         res.sendStatus(204)
+      } else {
+        res.sendStatus(400)
       }
     } catch (error) {
       let e = error

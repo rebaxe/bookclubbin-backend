@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import mongoose from 'mongoose'
 import { User } from '../src/models/user.js'
+import { BookClub } from '../src/models/bookClub.js'
 import { mockData } from './mockdata.js'
 import dotenv from 'dotenv'
 import request from 'supertest'
@@ -17,6 +18,17 @@ beforeAll(async () => {
     useNewUrlParser: true
   })
   await User.insertMany(mockData.users)
+  const users = await User.find({})
+  await BookClub.create({
+    clubname: 'Klubben',
+    invitations: [
+      { invitingUser: users[0].id, invitedUser: users[1].id },
+      { invitingUser: users[0].id, invitedUser: users[2].id }
+    ],
+    members: [users[0].id],
+    booksRead: [],
+    booksSaved: []
+  })
 })
 
 // Variable to be used in tests.
@@ -37,18 +49,19 @@ describe('GET /api/v1/users/', () => {
     )
     userId = res.body[0].id
   })
-})
-
-describe('GET /api/v1/users/', () => {
   it('should return 200 and two users', async () => {
     const res = await request(app).get('/api/v1/users/').query({ searchString: 'Pe' })
     expect(res.status).toBe(200)
     expect(res.body).toHaveLength(2)
   })
+  it('should return 404', async () => {
+    const res = await request(app).get('/api/v1/users/')
+    expect(res.status).toBe(404)
+  })
 })
 
 describe('GET /api/v1/user/:id', () => {
-  it('should return requested user with correct id', async () => {
+  it('should return 200 and requested user with correct id', async () => {
     const res = await request(app).get(`/api/v1/users/${userId}`)
     expect(res.status).toBe(200)
     expect(res.body).toEqual(
@@ -59,14 +72,22 @@ describe('GET /api/v1/user/:id', () => {
       }
     )
   })
+  it('should return 404', async () => {
+    const res = await request(app).get('/api/v1/users/123')
+    expect(res.status).toBe(404)
+  })
 })
 
 describe('POST /api/v1/user/:id/delete', () => {
-  it('should delete requested user with correct id', async () => {
+  it('should return 204 delete requested user with correct id', async () => {
     const res = await request(app).post(`/api/v1/users/${userId}/delete`)
     expect(res.status).toBe(204)
     const users = await User.find({})
     expect(users).toHaveLength(3)
+  })
+  it('should return 404 delete requested user with correct id', async () => {
+    const res = await request(app).post('/api/v1/users/123/delete')
+    expect(res.status).toBe(404)
   })
 })
 
