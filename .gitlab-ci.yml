@@ -17,5 +17,6 @@ Code testing:
     - npm install --save-dev jest supertest dotenv cross-env
   environment: 
     DB_CONNECTION_STRING_TEST=$DB_CONNECTION_STRING_TEST
+    PORT_TEST=0
   script:
     - npx cross-env NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll
