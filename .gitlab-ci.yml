@@ -16,14 +16,14 @@ install:
         - .npm/
         - node_modules/
 
-linting:
-   stage: test
-   script:
-      - npm run lint
-
-test:unit:
+test:
    stage: test
    script:
       -  npm run test:ci
    dependencies:
       - install
+
+linting:
+   stage: test
+   script:
+      - npm run lint
