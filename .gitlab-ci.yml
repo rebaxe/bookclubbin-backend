@@ -1,19 +1,31 @@
 image: node:latest 
 
 stages:
+  - install
   - lint
   - test
 
+Install:
+ stage: install
+ script:
+    - npm install
+ artifacts:
+    name: "artifacts"
+    untracked: true
+    expire_in: 30 mins
+    paths:
+      - .npm/
+      - node_modules/
+
+
 Code linting:
   stage: lint
-  before_script:
-    - npx install-peerdeps --dev @lnu/eslint-config
   script:
-      npx eslint .
+      npm run lint
 
 Code testing: 
   stage: test
-  before_script: 
-    - npm install --save-dev jest supertest dotenv cross-env
   script:
-    - npx cross-env PORT_TEST=0 NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll
+      - cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --testTimeout=20000 --runInBand --detectOpenHandles --verbose --forceExit 
+  dependencies:
+        - install
