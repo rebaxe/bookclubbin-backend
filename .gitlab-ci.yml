@@ -15,5 +15,6 @@ Code testing:
   stage: test
   before_script: 
     - npm install --save-dev jest supertest dotenv cross-env
+    - DB_CONNECTION_STRING_TEST=$DB_CONNECTION_STRING_TEST
   script:
-    - npx cross-env DB_CONNECTION_STRING_TEST=$DB_CONNECTION_STRING_TEST NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll
+    - npx cross-env NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll
