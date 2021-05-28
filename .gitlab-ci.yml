@@ -1,31 +1,29 @@
-image: node:latest 
+image: node:latest
 
 stages:
-  - install
-  - lint
-  - test
+    - install
+    - test
 
-Install:
- stage: install
- script:
-    - npm install
- artifacts:
-    name: "artifacts"
-    untracked: true
-    expire_in: 30 mins
-    paths:
-      - .npm/
-      - node_modules/
+install:
+   stage: install
+   script:
+      - npm install
+   artifacts:
+      name: "artifacts"
+      untracked: true
+      expire_in: 30 mins
+      paths:
+        - .npm/
+        - node_modules/
 
+linting:
+   stage: test
+   script:
+      - npm run lint
 
-Code linting:
-  stage: lint
-  script:
-      npm run lint
-
-Code testing: 
-  stage: test
-  script:
-      - cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --testTimeout=20000 --runInBand --detectOpenHandles --verbose --forceExit 
-  dependencies:
-        - install
+test:unit:
+   stage: test
+   script:
+      -  npm run test:ci
+   dependencies:
+      - install
