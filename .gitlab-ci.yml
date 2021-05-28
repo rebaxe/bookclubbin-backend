@@ -16,4 +16,4 @@ Code testing:
   before_script: 
     - npm install --save-dev jest supertest dotenv cross-env
   script:
-    - cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll
+    - npx cross-env NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll
