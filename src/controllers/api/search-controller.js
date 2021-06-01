@@ -13,14 +13,13 @@ import axios from 'axios'
  */
 export class SearchController {
   /**
-   * Provide req.image to route if :id is present.
+   * Get searchresult for requested search string and search preferences.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
-   * @param {string} id - The id of the image to load.
    */
-  async getSearchResult (req, res, next, id) {
+  async getSearchResult (req, res, next) {
     if (req.query.query) {
       const searchResult = await axios.get('https://www.googleapis.com/books/v1/volumes', {
         params: {
@@ -45,8 +44,9 @@ export class SearchController {
         })
         res.status(200).json(result)
       } else {
-        const noResult = {}
-        res.status(200).json(noResult)
+        // const noResult = {}
+        // res.status(200).json(noResult)
+        res.sendStatus(204)
       }
     } else {
       res.status(400).send('The required parameter \'query\' is missing or empty.')

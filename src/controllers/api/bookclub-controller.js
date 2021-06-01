@@ -31,7 +31,7 @@ export class BookclubController {
       res.status(201).json(club)
     } catch (error) {
       let e = error
-      e = createError(404)
+      e = createError(400)
       e.innerException = error
       next(e)
     }
@@ -68,7 +68,7 @@ export class BookclubController {
     try {
       const id = req.params.id
       const club = await BookClub.find({ members: id })
-      !club ? res.status(204) : res.status(200).json(club)
+      club.length === 0 ? res.sendStatus(204) : res.status(200).json(club)
     } catch (error) {
       let e = error
       e = createError(404)
@@ -111,8 +111,11 @@ export class BookclubController {
    */
   async inviteMember (req, res, next) {
     try {
-      const clubId = req.params.id
+      if (!req.body.invite || !req.body.invite.invitedUser || !req.body.invite.invitingUser) {
+        res.sendStatus(400)
+      }
       const invite = req.body.invite
+      const clubId = req.params.id
       await BookClub.findByIdAndUpdate(clubId,
         {
           $push: { invitations: invite }
@@ -136,6 +139,9 @@ export class BookclubController {
    */
   async acceptInvite (req, res, next) {
     try {
+      if (!req.body.user) {
+        res.sendStatus(400)
+      }
       const clubId = req.params.id
       const userId = req.body.user
 
@@ -168,6 +174,9 @@ export class BookclubController {
    */
   async removeInvite (req, res, next) {
     try {
+      if (!req.body.user) {
+        res.sendStatus(400)
+      }
       const clubId = req.params.id
       const userId = req.body.user
 
@@ -216,6 +225,8 @@ export class BookclubController {
           }
         )
         res.sendStatus(204)
+      } else {
+        res.sendStatus(400)
       }
     } catch (error) {
       let e = error
@@ -251,6 +262,8 @@ export class BookclubController {
           }
         )
         res.sendStatus(204)
+      } else {
+        res.sendStatus(400)
       }
     } catch (error) {
       let e = error
@@ -269,6 +282,9 @@ export class BookclubController {
    */
   async removeMember (req, res, next) {
     try {
+      if (!req.body.member) {
+        res.sendStatus(400)
+      }
       const clubId = req.params.id
       await BookClub.findByIdAndUpdate(clubId,
         {
