@@ -55,7 +55,8 @@ export class AuthController {
         res
           .status(200)
           .cookie('accessToken', token, {
-            httpOnly: true
+            httpOnly: true,
+            secure: true
           })
           .json(currentUser)
       }
@@ -134,6 +135,7 @@ export class AuthController {
         .status(200)
         .cookie('accessToken', '', {
           httpOnly: true,
+          secure: true,
           expires: new Date(1)
         })
         .send()
