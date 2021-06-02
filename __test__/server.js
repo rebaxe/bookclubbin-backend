@@ -1,16 +1,17 @@
 /**
- * The starting point of the application.
+ * The starting point of the application when testing with Jest.
  *
- * @author David Heinebäck <du222aa@student.lnu.se>
+ * @author Rebecca Axelsson <ra223ai@student.lnu.se>
  * @version 1.0.0
  */
 
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-// import helmet from 'helmet'
+import helmet from 'helmet'
 import { router } from '../src/routes/router.js'
 
+// Env-variables.
 dotenv.config()
 
 /**
@@ -19,18 +20,16 @@ dotenv.config()
 
 export const app = express()
 
-// Set various HTTP headers to make the application little more secure (https://www.npmjs.com/package/helmet).
-// app.use(helmet())
+app.use(helmet())
 
 app.use(cors())
 
-// Parse requests of the content type application/json.
 app.use(express.json({ limit: '500kb' }))
 
 // Register routes.
 app.use('/', router)
 
-// Error handler.
+// Error handling.
 app.use(function (err, req, res, next) {
   err.status = err.status || 500
 
@@ -44,8 +43,7 @@ app.use(function (err, req, res, next) {
     return
   }
 
-  // Development only!
-  // Only providing detailed error in development.
+  // These details are only provided in development!
   return res
     .status(err.status)
     .json({

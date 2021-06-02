@@ -8,6 +8,7 @@
 import express from 'express'
 import logger from 'morgan'
 import cors from 'cors'
+import helmet from 'helmet'
 import { connectDB } from './config/mongoose.js'
 import { router } from './routes/router.js'
 import cookieParser from 'cookie-parser'
@@ -19,6 +20,8 @@ export const main = async () => {
   await connectDB()
 
   const app = express()
+
+  app.use(helmet())
 
   app.use(logger('dev'))
 
@@ -37,7 +40,7 @@ export const main = async () => {
   // Register routes.
   app.use('/', router)
 
-  // Error handler.
+  // Error handling.
   app.use(function (err, req, res, next) {
     err.status = err.status || 500
 
@@ -51,8 +54,7 @@ export const main = async () => {
       return
     }
 
-    // Development only!
-    // Only providing detailed error in development.
+    // Details only provided in development.
     return res
       .status(err.status)
       .json({
