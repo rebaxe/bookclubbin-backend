@@ -1,0 +1,22 @@
+image: node:latest
+
+stages:
+    - install
+    - lint
+
+install:
+   stage: install
+   script:
+      - npm install
+   artifacts:
+      name: "artifacts"
+      untracked: true
+      expire_in: 30 mins
+      paths:
+        - .npm/
+        - node_modules/
+
+linting:
+   stage: lint
+   script:
+      - npm run lint
