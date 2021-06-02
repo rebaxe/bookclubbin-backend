@@ -60,7 +60,7 @@ export class AuthController {
       }
     } catch (error) {
       let e = error
-      e = createError(400)
+      e = createError(403)
       e.innerException = error
       next(e)
     }
