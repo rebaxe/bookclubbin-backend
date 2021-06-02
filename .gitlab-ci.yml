@@ -2,7 +2,7 @@ image: node:latest
 
 stages:
     - install
-    - test
+    - lint
 
 install:
    stage: install
@@ -16,14 +16,7 @@ install:
         - .npm/
         - node_modules/
 
-test:
-   stage: test
-   script:
-      -  npm run test:ci
-   dependencies:
-      - install
-
 linting:
-   stage: test
+   stage: lint
    script:
       - npm run lint
