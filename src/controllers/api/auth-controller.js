@@ -77,8 +77,14 @@ export class AuthController {
    */
   async verifyLoggedIn (req, res, next) {
     try {
+      // const ticket = await client.verifyIdToken({
+      //   idToken: req.cookies.accessToken,
+      //   audience: process.env.GOOGLE_CLIENT_ID
+      // })
+      const token = req.headers.authorization?.split(' ')
+
       const ticket = await client.verifyIdToken({
-        idToken: req.cookies.accessToken,
+        idToken: token[1],
         audience: process.env.GOOGLE_CLIENT_ID
       })
       // Get data from payload.
@@ -102,8 +108,15 @@ export class AuthController {
    */
   async verifyToken (req, res, next) {
     try {
+      // const ticket = await client.verifyIdToken({
+      //   idToken: req.cookies.accessToken,
+      //   audience: process.env.GOOGLE_CLIENT_ID
+      // })
+
+      const token = req.headers.authorization?.split(' ')
+
       const ticket = await client.verifyIdToken({
-        idToken: req.cookies.accessToken,
+        idToken: token[1],
         audience: process.env.GOOGLE_CLIENT_ID
       })
 
