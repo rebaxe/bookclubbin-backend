@@ -77,10 +77,6 @@ export class AuthController {
    */
   async verifyLoggedIn (req, res, next) {
     try {
-      // const ticket = await client.verifyIdToken({
-      //   idToken: req.cookies.accessToken,
-      //   audience: process.env.GOOGLE_CLIENT_ID
-      // })
       const token = req.headers.authorization?.split(' ')
 
       const ticket = await client.verifyIdToken({
@@ -108,11 +104,6 @@ export class AuthController {
    */
   async verifyToken (req, res, next) {
     try {
-      // const ticket = await client.verifyIdToken({
-      //   idToken: req.cookies.accessToken,
-      //   audience: process.env.GOOGLE_CLIENT_ID
-      // })
-
       const token = req.headers.authorization?.split(' ')
 
       const ticket = await client.verifyIdToken({
@@ -142,21 +133,21 @@ export class AuthController {
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
    */
-  async logout (req, res, next) {
-    try {
-      res
-        .status(200)
-        .cookie('accessToken', '', {
-          httpOnly: true,
-          secure: true,
-          expires: new Date(1)
-        })
-        .send()
-    } catch (error) {
-      let e = error
-      e = createError(400)
-      e.innerException = error
-      next(e)
-    }
-  }
-}
+//   async logout (req, res, next) {
+//     try {
+//       res
+//         .status(200)
+//         .cookie('accessToken', '', {
+//           httpOnly: true,
+//           secure: true,
+//           expires: new Date(1)
+//         })
+//         .send()
+//     } catch (error) {
+//       let e = error
+//       e = createError(400)
+//       e.innerException = error
+//       next(e)
+//     }
+//   }
+// }

@@ -26,8 +26,7 @@ export const main = async () => {
   app.use(logger('dev'))
 
   app.use(cors({
-    origin: ['http://localhost:3000', 'https://bookclubbin.herokuapp.com'],
-    credentials: true
+    origin: ['http://localhost:3000', 'https://bookclubbin.herokuapp.com', 'http://bookclubbin.herokuapp.com']
   }))
 
   app.use(cookieParser())
