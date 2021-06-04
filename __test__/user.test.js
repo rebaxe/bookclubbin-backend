@@ -54,10 +54,6 @@ describe('GET /api/v1/users/', () => {
     expect(res.status).toBe(200)
     expect(res.body).toHaveLength(2)
   })
-  it('should return 400 if query is missing', async () => {
-    const res = await request(app).get('/api/v1/users/')
-    expect(res.status).toBe(400)
-  })
   it('should return 200 and empty array if no users found', async () => {
     const res = await request(app).get('/api/v1/users/').query({ searchString: 'Qxz' })
     expect(res.status).toBe(200)

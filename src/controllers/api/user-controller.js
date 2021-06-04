@@ -21,9 +21,9 @@ export class UserController {
   async searchUser (req, res, next) {
     try {
       const searchString = req.query.searchString
-      if (!searchString) {
-        res.sendStatus(400)
-      }
+      // if (!searchString) {
+      //   res.sendStatus(400)
+      // }
       const result = await User.find({ username: { $regex: searchString, $options: 'i' } })
       res.status(200).json(result)
     } catch (error) {

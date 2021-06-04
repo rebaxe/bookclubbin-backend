@@ -1,7 +1,7 @@
 {
   "name": "resource-service",
   "version": "1.0.0",
-  "description": "The resource service for the BookClubbin' app.",
+  "description": "The backend for the BookClubbin' app.",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -21,7 +21,6 @@
   "private": "true",
   "dependencies": {
     "axios": "^0.21.1",
-    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "google-auth-library": "^7.1.0",

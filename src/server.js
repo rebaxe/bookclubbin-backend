@@ -11,7 +11,6 @@ import cors from 'cors'
 import helmet from 'helmet'
 import { connectDB } from './config/mongoose.js'
 import { router } from './routes/router.js'
-import cookieParser from 'cookie-parser'
 
 /**
  * The main function of the application.
@@ -26,11 +25,8 @@ export const main = async () => {
   app.use(logger('dev'))
 
   app.use(cors({
-    origin: ['http://localhost:3000', 'https://bookclubbin.herokuapp.com'],
-    credentials: true
+    origin: ['http://localhost:3000', 'https://bookclubbin.herokuapp.com', 'http://bookclubbin.herokuapp.com']
   }))
-
-  app.use(cookieParser())
 
   // Parse requests of the content type application/json.
   app.use(express.json({ limit: '500kb' }))
