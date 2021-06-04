@@ -10,7 +10,6 @@
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --testTimeout=10000 --runInBand --detectOpenHandles --verbose --watchAll --coverage",
-    "test:ci": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --testTimeout=20000 --runInBand --detectOpenHandles --verbose --forceExit"
   },
   "repository": {
     "type": "git",
