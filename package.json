@@ -1,7 +1,7 @@
 {
   "name": "resource-service",
   "version": "1.0.0",
-  "description": "The resource service for the BookClubbin' app.",
+  "description": "The backend for the BookClubbin' app.",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
